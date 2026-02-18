@@ -21,6 +21,8 @@ app.use("/orders", orderRoutes);
 app.get("/", (req, res) => {
   res.send("E-commerce Backend is running ");
 });
+ const { errorHandler } = require("./middleware/errorMiddleware");
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

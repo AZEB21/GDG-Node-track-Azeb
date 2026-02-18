@@ -1,14 +1,16 @@
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
+const asyncHandler = require("../middleware/asyncHandler");
 
-exports.createOrder = async (req, res) => {
-  try {
+exports.createOrder = asyncHandler(async (req, res) => {
+  
     const { customerName, customerAddress } = req.body;
 
     const cartItems = await Cart.find().populate("productId");
     if (cartItems.length === 0) {
-      return res.status(400).json({ message: "Cart is empty" });
+      res.status(400);
+    throw new Error("Cart is empty");
     }
 
     let total = 0;
@@ -18,9 +20,8 @@ exports.createOrder = async (req, res) => {
       const product = item.productId;
 
       if (item.quantity > product.stock) {
-        return res.status(400).json({
-          message: `Not enough stock for ${product.name}`,
-        });
+       res.status(400);
+      throw new Error(`Not enough stock for ${product.name}`);
       }
 
       product.stock -= item.quantity;
@@ -49,28 +50,22 @@ exports.createOrder = async (req, res) => {
       message: "Order placed successfully",
       order: savedOrder,
     });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  } 
 
-exports.getOrders = async (req, res) => {
-  try {
+);
+exports.getOrders =asyncHandler( async (req, res) => {
+ 
     const orders = await Order.find().populate("items.productId");
     res.json(orders);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  } );
 
-exports.getOrderById = async (req, res) => {
-  try {
+exports.getOrderById = asyncHandler(async (req, res) => {
+ 
     const order = await Order.findById(req.params.id).populate(
       "items.productId"
     );
-    if (!order) return res.status(404).json({ message: "Order not found" });
+    if (!order) { res.status(404);
+    throw new Error("Order not found");}
     res.json(order);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  } 
+);
