@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET, JWT_EXPIRE } = require('../config/env.js'); // ← use env.js
+const { JWT_SECRET, JWT_EXPIRE } = require('../config/env.js');
 
 exports.signup = async (req, res) => {
   const { full_name, email, password } = req.body;
@@ -26,7 +26,7 @@ exports.login = async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-  // ✅ Use JWT_SECRET and JWT_EXPIRE from env.js
+
   const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRE });
   res.cookie('token', token, { httpOnly: true }).json({ message: 'Logged in' });
 };

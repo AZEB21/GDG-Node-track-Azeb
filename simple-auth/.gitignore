@@ -1,7 +1,7 @@
 # dependencies
 node_modules/
 
-# environment variables
+# environment var
 .env
 .env.local
 .env.development.local
@@ -15,6 +15,3 @@ npm-debug.log*
 # OS files
 .DS_Store
 Thumbs.db
-
-# optional
-.env.*
