@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET, JWT_EXPIRE } = require('../env'); // ← use env.js
+const { JWT_SECRET, JWT_EXPIRE } = require('../config/env.js'); // ← use env.js
 
 exports.signup = async (req, res) => {
   const { full_name, email, password } = req.body;

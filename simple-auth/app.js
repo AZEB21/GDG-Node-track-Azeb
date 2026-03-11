@@ -1,8 +1,8 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
-const { PORT } = require('./env');
-require('./config/db');
+const { PORT } = require('./config/env.js');
+require('./database/db.js');
 
 const app = express();
 app.use(express.json());
